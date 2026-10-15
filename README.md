@@ -16,27 +16,68 @@
 
 ---
 
-## 2. Environment Variables
+## Project Structure
 
-Create a `.env` file in the project root:
+LabelLens uses a single-repository architecture. The frontend and backend are organized into separate directories and work together as one application.
 
-```env
-# Application Port
-PORT=3000
-
-# MongoDB Connection String (MongoDB Atlas URI or local instance)
-# Format: mongodb+srv://<username>:<password>@cluster0.mongodb.net/labellens?retryWrites=true&w=majority
-MONGODB_URI="mongodb://localhost:27017/labellens"
-
-# JWT Secret for password authentication and session management
-JWT_SECRET="labellens_secure_jwt_secret_college_fed_fed2026"
-
-# Optional: Google Gemini API Key for AI food science insights
-GEMINI_API_KEY="your_gemini_api_key_here"
-
-# APP_URL: Injected automatically by AI Studio at runtime
-APP_URL="http://localhost:3000"
+```text
+FSD_2-26/
+├── src/                    # FRONTEND — React application
+│   ├── components/         # Reusable UI components
+│   ├── services/           # API communication
+│   └── ...                 # Other frontend files
+├── server/                 # BACKEND — Express API modules
+│   ├── db.ts                # MongoDB connection
+│   ├── models/              # Mongoose schemas and data access
+│   ├── middleware/          # Authentication middleware
+│   ├── routes/              # API endpoints
+│   └── services/            # Product analysis and external API logic
+├── server.ts                # Node.js / Express server entry point
+├── index.html               # Frontend HTML entry point
+├── package.json             # Dependencies and scripts
+├── vite.config.ts           # Vite development configuration
+├── tsconfig.json            # TypeScript configuration
+├── .env.example             # Environment variable template
+├── .gitignore               # Files excluded from Git
+└── README.md                # Project documentation
 ```
+
+### Frontend — React
+
+The frontend is responsible for the user interface and interactions, including:
+
+- Barcode scanning and manual barcode entry.
+- Food craving search and product browsing.
+- Nutrition analysis and health score presentation.
+- Allergen alerts and healthier alternative comparisons.
+- User registration, login, profile and favorites interfaces.
+
+The frontend communicates with the backend through HTTP API requests.
+
+### Backend — Node.js and Express.js
+
+The backend handles application logic and data processing, including:
+
+- REST API endpoints and request validation.
+- User registration, login and JWT authentication.
+- User profiles, dietary preferences and favorites.
+- MongoDB access through Mongoose when a database connection is configured.
+- Product lookup through Open Food Facts.
+- Nutrition analysis, allergen detection and healthier alternative selection.
+
+### Database — MongoDB and Mongoose
+
+MongoDB is the intended persistent database. Mongoose defines and manages the application's data models. When a live MongoDB connection is unavailable, the current application may use an in-memory fallback; data stored only in memory is not persistent across server restarts.
+
+### Application Flow
+
+1. The user interacts with the React frontend.
+2. The frontend sends requests to the Express backend.
+3. The backend processes requests, checks relevant data and calls external product services when required.
+4. User data is stored in MongoDB when a live database connection is available.
+5. The backend returns results to the frontend for display.
+
+**Technology stack:** MongoDB, Express.js, React, Node.js, TypeScript, Vite, Mongoose and JWT authentication.
 
 ---
 
