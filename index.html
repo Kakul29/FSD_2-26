@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LabelLens — AI-Powered Food Scanner</title>
+    <meta name="description" content="Know what's in your food — AI-powered packaged food ingredient analysis, barcode scanner, personalized allergen alerts, and healthier alternatives." />
+    <meta property="og:title" content="LabelLens — AI-Powered Food Scanner" />
+    <meta property="og:description" content="Know what's in your food — AI-powered packaged food ingredient analysis, barcode scanner, personalized allergen alerts, and healthier alternatives." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=Outfit:wght@400..700&display=swap" rel="stylesheet">
+    <script>
+      (function () {
+        // Suppress HMR WebSocket rejections as per AI Studio environment constraints
+        window.addEventListener('unhandledrejection', function (event) {
+          if (
+            event.reason &&
+            (String(event.reason).includes('WebSocket') ||
+              event.reason.message?.includes('WebSocket') ||
+              event.reason.stack?.includes('@vite/client'))
+          ) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+          }
+        });
+
+        window.addEventListener('error', function (event) {
+          if (
+            event.message?.includes('WebSocket') ||
+            event.filename?.includes('@vite/client')
+          ) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+          }
+        });
+
+        // Provide safe stub for Vite HMR WebSocket connections
+        var OriginalWebSocket = window.WebSocket;
+        if (OriginalWebSocket) {
+          window.WebSocket = function (url, protocols) {
+            var isViteHmr =
+              protocols === 'vite-hmr' ||
+              (Array.isArray(protocols) && protocols.includes('vite-hmr')) ||
+              (typeof url === 'string' && (url.includes('token=') || url.includes('vite')));
+
+            if (isViteHmr) {
+              var target = new EventTarget();
+              target.readyState = 1; // OPEN immediately so line 225 is bypassed
+              target.OPEN = 1;
+              target.CONNECTING = 0;
+              target.CLOSING = 2;
+              target.CLOSED = 3;
+              target.url = url;
+              target.protocol = 'vite-hmr';
+              target.send = function () {};
+              target.close = function () { target.readyState = 3; };
+              setTimeout(function () {
+                target.dispatchEvent(new Event('open'));
+              }, 0);
+              return target;
+            }
+            return new OriginalWebSocket(url, protocols);
+          };
+          window.WebSocket.prototype = OriginalWebSocket.prototype;
+          window.WebSocket.CONNECTING = 0;
+          window.WebSocket.OPEN = 1;
+          window.WebSocket.CLOSING = 2;
+          window.WebSocket.CLOSED = 3;
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
